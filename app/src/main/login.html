@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>登录</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        outline: none;
+      }
+      html, body {
+        /*height: 100%;*/
+      }
+
+      #login-container {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        border-radius: 4px;
+        background-color: transparent;
+        -webkit-app-region: drag;
+      }
+      #login-container .top-container {
+        position: absolute;
+        top: 0;
+        z-index: 1;
+        width: 100%;
+        height: 315px;
+        background: -webkit-linear-gradient(top, #eee, #ddd);
+        border-radius: 4px;
+      }
+      #login-container .top-container .bottom-btns {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        /*background-color: red;*/
+      }
+      #login-container .top-container .bottom-btns img {
+        -webkit-app-region: no-drag;
+        -webkit-user-select: none;
+        width: 64px;
+        height: 32px;
+        -webkit-filter: opacity(0.5);
+        -webkit-transform: rotate(180deg);
+        -moz-transform: rotate(180deg);
+        -o-transform: rotate(180deg);
+        transform: rotate(180deg);
+        -webkit-transition: all .3s cubic-bezier(0.215, 0.610, 0.355, 1.000);
+        -moz-transition: all .3s cubic-bezier(0.215, 0.610, 0.355, 1.000);
+        -o-transition: all .3s cubic-bezier(0.215, 0.610, 0.355, 1.000);
+        transition: all .3s cubic-bezier(0.215, 0.610, 0.355, 1.000);
+      }
+      #login-container .top-container .bottom-btns img.up {
+        -webkit-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+      }
+      #login-container .top-container .header-btns {
+        width: 100%;
+        height: 32px;
+        /*text-align: right;*/
+      }
+      #login-container .top-container .header-btns img.close {
+        -webkit-app-region: no-drag;
+        -webkit-user-select: none;
+        width: 24px;
+        height: 24px;
+        margin-left: 4px;
+        margin-top: 4px;
+        opacity: .5;
+        cursor: pointer;
+      }
+      #login-container .top-container .main-container {
+        width: 100%;
+        height: calc(100% - 64px);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      #login-container .top-container .main-container .user-icon {
+        width: 100%;
+        height: 140px;
+        /*background-color: #5e4fff;*/
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      #login-container .top-container .main-container .user-icon img {
+        width: 100px;
+        height: 100px;
+        border-radius: 60px;
+        border: 3px solid darkgray;
+      }
+      #login-container .top-container .main-container .user-icon img:hover {
+        -webkit-filter: opacity(0.9);
+      }
+      #login-container .top-container .main-container .status-container {
+        width: 100%;
+        height: 25px;
+      }
+      #login-container .top-container .main-container .login-form-sending {
+        width: 220px;
+        height: 75px;
+        background-color: transparent;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+      }
+      #login-container .top-container .main-container .login-form-sending .info-username {
+        font-size: 14px;
+        color: #333;
+        width: 100%;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      #login-container .top-container .main-container .login-form-sending .login-cancel {
+        text-align: center;
+      }
+      #login-container .top-container .main-container .login-form-sending .login-cancel button {
+        padding: 6px 16px;
+        color: #666;
+        border-radius: 4px;
+        background-color: transparent;
+        border: 1px solid #c8c8c8;
+        cursor: pointer;
+      }
+      #login-container .top-container .main-container .login-form-sending .login-cancel button:hover {
+        background-color: #ddd;
+      }
+      #login-container .top-container .main-container .login-form {
+        width: 220px;
+        height: auto;
+        border: 1px solid darkgray;
+        border-radius: 4px;
+        background-color: #ffffff;
+      }
+      #login-container .top-container .main-container .login-form .form-item {
+        padding: 4px 8px;
+      }
+      #login-container .top-container .main-container .login-form .form-item input {
+        border: none;
+        width: 100%;
+        font-size: 14px;
+        line-height: 28px;
+      }
+      #login-container .top-container .main-container .login-form .username {
+        border-bottom: 1px solid #c8c8c8;
+      }
+      #login-container .top-container .main-container .login-form .password {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+      #login-container .top-container .main-container .login-form .password input {
+        padding-right: 15px;
+      }
+      #login-container .top-container .main-container .login-form .password .login {
+        width: 28px;
+        height: 28px;
+        display: none;
+        align-items: center;
+        justify-content: center;
+      }
+      #login-container .top-container .main-container .login-form .password .login img {
+        width: 20px;
+        height: 20px;
+        opacity: .5;
+      }
+      #login-container .bottom-container {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 51px;
+        opacity: 0;
+        padding: 12px 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: #ddd;
+        -webkit-transform: translate3d(0, -100%, 0);
+        -moz-transform: translate3d(0, -100%, 0);
+        -o-transform: translate3d(0, -100%, 0);
+        transform: translate3d(0, -100%, 0);
+        -webkit-transition: all .3s cubic-bezier(0.215, 0.610, 0.355, 1.000);
+        -moz-transition: all .3s cubic-bezier(0.215, 0.610, 0.355, 1.000);
+        -o-transition: all .3s cubic-bezier(0.215, 0.610, 0.355, 1.000);
+        transition: all .3s cubic-bezier(0.215, 0.610, 0.355, 1.000);
+      }
+      #login-container .bottom-container.shown {
+        opacity: 1;
+        -webkit-transform: translate3d(0, 0, 0);
+        -moz-transform: translate3d(0, 0, 0);
+        -o-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+      }
+      #login-container .item {
+        width: calc(100% - 30px);
+        height: 30px;
+        padding: 0 15px;
+        font-size: 12px;
+        color: #666;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+      #login-container .item .right button {
+        color: #666;
+        padding: 2px 8px;
+        background-color: transparent;
+        border: 1px solid #999;
+        border-radius: 12px;
+        cursor: pointer;
+      }
+      #login-container .item .right button:hover {
+        background-color: #d0d0d0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="login-container">
+      <div class="top-container">
+        <div class="header-btns">
+          <img src="../img/close.png" class="close" onclick="closeWindow()">
+        </div>
+        <div class="main-container">
+          <div class="user-icon">
+            <img src="../img/avatar02.jpg">
+          </div>
+          <div class="status-container"></div>
+          <div class="login-form">
+            <div class="username form-item">
+              <input type="text" oninput="loginInfoInput()" placeholder="输入账号"/>
+            </div>
+            <div class="password form-item">
+              <input type="password" oninput="loginInfoInput()" placeholder="输入密码"/>
+              <div class="login" onclick="login()">
+                <img src="../img/login.png" alt="登录">
+              </div>
+            </div>
+          </div>
+          <div class="login-form-sending" style="display: none;">
+            <div class="info-username"></div>
+            <div class="login-cancel">
+              <button type="button">取消</button>
+            </div>
+          </div>
+        </div>
+        <div class="bottom-btns">
+          <img class="show-bottom-container" src="../img/down.png">
+        </div>
+      </div>
+      <div class="bottom-container">
+        <div class="item">
+          <div class="left">
+            <input type="checkbox"/> 记住密码
+          </div>
+          <div class="right">
+            <button type="button">忘记密码</button>
+          </div>
+        </div>
+        <div class="item">
+          <div class="left">
+            <input type="checkbox"/> 自动登录
+          </div>
+          <div class="right">
+            <button type="button">注册账号</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <audio src="" id="audio-tips"></audio>
+  </body>
+  <script>
+    /***
+     * 提示音下载 http://sc.chinaz.com/tag_yinxiao/tishiyin_5.html
+     * */
+    const electron = require('electron');
+    let audioTips = document.querySelector('#audio-tips');
+    window.onload = function () {
+      var showBottomContainer = document.querySelector('.show-bottom-container');
+      var bottomContainer = document.querySelector('.bottom-container');
+      var topContainer = document.querySelector('.top-container');
+      showBottomContainer.addEventListener('click', function () {
+        if (showBottomContainer.classList.contains('up')) {
+          showBottomContainer.classList.remove('up');
+          bottomContainer.classList.contains('shown') && bottomContainer.classList.remove('shown');
+          topContainer.style.boxShadow = 'none';
+        } else {
+          showBottomContainer.classList.add('up');
+          !bottomContainer.classList.contains('shown') && bottomContainer.classList.add('shown');
+          topContainer.style.boxShadow = '0 1px 12px gray';
+        }
+        playSound('../resources/ls/soso.wav');
+      }, false);
+
+      window.onkeydown = function (evt) {
+        if (evt.keyCode == 13) {
+          // 用户按下了回车键, 登录
+          login();
+        }
+      }
+    };
+    function loginInfoInput(target) {
+      var username = document.querySelector('.username input');
+      var password = document.querySelector('.password input');
+      var loginBtn = document.querySelector('.login');
+      loginBtn.style.display = ((password.value != '' && username.value != '') ? 'inline-flex': 'none');
+    }
+    function login () {
+      var _username = document.querySelector('.username input');
+      var _password = document.querySelector('.password input');
+      if (_username.value == '') {
+        _username.focus();
+      } else {
+        if (_password.value == '') {
+          _password.focus();
+        } else {
+          electron.remote.ipcMain.emit('login', {username: _username.value, password: _password.value});
+
+          // 隐藏登录表单
+          // 显示登录中
+          var loginForm = document.querySelector('.login-form');
+          var sendingForm = document.querySelector('.login-form-sending');
+          loginForm.style.display = 'none';
+          sendingForm.querySelector('.info-username').innerHTML = _username.value;
+          sendingForm.style.display = 'block';
+        }
+      }
+    }
+    function closeWindow () {
+//      electron.remote.getCurrentWindow().close();
+      electron.remote.app.quit();
+    }
+
+    electron.remote.ipcMain.on('login-status', function (res) {
+      if (res.status == 0) {
+        // 登录失败
+        setTimeout(function () {
+          var loginForm = document.querySelector('.login-form');
+          var sendingForm = document.querySelector('.login-form-sending');
+          loginForm.style.display = 'block';
+          sendingForm.querySelector('.info-username').innerHTML = '';
+          sendingForm.style.display = 'none';
+          playSound('../resources/custom01/Global.wav');
+        }, 1000);
+      } else {
+        // 登录成功
+      }
+    });
+
+    function playSound (src) {
+      audioTips.src = src;
+      audioTips.play();
+    }
+  </script>
+</html>
